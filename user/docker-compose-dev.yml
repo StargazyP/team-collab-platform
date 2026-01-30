@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: user-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: user
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - user-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-app
+    restart: unless-stopped
+    env_file:
+      - .env.development
+    ports:
+      - "3008:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - user-network
+
+volumes:
+  mysql_data:
+
+networks:
+  user-network:
+    driver: bridge

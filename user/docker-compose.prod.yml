@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: user-mysql-prod
+    restart: always
+    env_file:
+      - .env.production
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+    networks:
+      - user-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+
+  app:
+    image: ${DOCKER_IMAGE}
+    container_name: user-app-prod
+    restart: always
+    env_file:
+      - .env.production
+    ports:
+      - "127.0.0.1:3008:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - user-network
+
+volumes:
+  mysql_data_prod:
+
+networks:
+  user-network:
+    driver: bridge
