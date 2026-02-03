@@ -1,8 +1,9 @@
 import { getCurrentUser } from "@/lib/auth";
 import { NextRequest } from "next/server";
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 
-export type Permission = 
+const db = getDB();
+export type Permission =
     | "USER_READ"
     | "USER_WRITE"
     | "USER_DELETE"

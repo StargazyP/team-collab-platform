@@ -1,10 +1,11 @@
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 import type { Todo } from "@/domain/todo";
-
+const db = getDB();
 /**
  * Todo 생성
  */
 export async function createTodo(
+
     title: string,
     workspaceId: number,
     createdBy: number,

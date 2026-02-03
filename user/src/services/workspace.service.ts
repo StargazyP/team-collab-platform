@@ -1,6 +1,7 @@
-import { db } from "@/lib/db";
+import { getDB } from "@/lib/db";
 import type { Workspace, WorkspaceMember, WorkspaceRole } from "@/domain/workspace";
 
+const db = getDB();
 /**
  * Workspace 생성
  */
