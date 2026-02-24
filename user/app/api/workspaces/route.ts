@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "@/lib/auth";
+import { getUserFromRequest } from "@/lib/auth"; // ✅ 여기 주목
 import { getUserWorkspaces, createWorkspace } from "@/services/workspace.service";
 
 /**
@@ -7,8 +7,17 @@ import { getUserWorkspaces, createWorkspace } from "@/services/workspace.service
  */
 export async function GET(req: NextRequest) {
     try {
-        const user = getCurrentUser(req);
+        console.log("🔍 [GET /api/workspaces] Request received");
+        console.log("🔍 [GET /api/workspaces] Request headers:", Object.fromEntries(req.headers.entries()));
+        
+        // Try method 1: Get user from injected headers (middleware)
+        const user = await getUserFromRequest(req);
+        
+        // If headers not injected, fall back to reading token from cookie directly
+    
+        
         if (!user) {
+            console.log("❌ [GET /api/workspaces] No user - returning 401");
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
@@ -31,7 +40,7 @@ export async function GET(req: NextRequest) {
  */
 export async function POST(req: NextRequest) {
     try {
-        const user = getCurrentUser(req);
+        const user = await getUserFromRequest(req);
         if (!user) {
             return NextResponse.json(
                 { error: "Unauthorized" },

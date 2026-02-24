@@ -12,6 +12,11 @@
    source database/migrations/create_service_tables.sql;
    ```
 
+3. **단일 세션용 tokenVersion 추가**
+   ```sql
+   source database/migrations/add_token_version.sql;
+   ```
+
 또는 MySQL 클라이언트에서 직접 실행:
 ```bash
 mysql -u [username] -p [database_name] < database/migrations/create_service_tables.sql

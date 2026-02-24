@@ -2,6 +2,7 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: user
@@ -18,15 +19,30 @@ services:
       retries: 5
       start_period: 30s
 
-  # app:
-  #   build: .
-  #   env_file:
-  #     - .env.development
-  #   ports:
-  #     - "3008:3000"
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
+  livekit:
+    image: livekit/livekit-server
+    container_name: livekit
+    command: --config /livekit.yaml
+    ports:
+      - "7881:7881"
+      - "50000-50100:50000-50100/udp"
+    volumes:
+      - ./livekit.yaml:/livekit.yaml
+    restart: unless-stopped
+
+  # LiveKit WSS 프록시 (7880 포트 SSL 종료)
+  nginx-livekit:
+    image: nginx:alpine
+    container_name: nginx-livekit
+    ports:
+      - "7880:7880"
+    volumes:
+      - ./nginx-livekit.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./localhost+2.pem:/etc/nginx/certs/cert.pem:ro
+      - ./localhost+2-key.pem:/etc/nginx/certs/key.pem:ro
+    depends_on:
+      - livekit
+    restart: unless-stopped
 
 volumes:
   mysql_data:

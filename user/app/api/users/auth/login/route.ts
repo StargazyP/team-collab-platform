@@ -71,8 +71,8 @@ export async function POST(req: NextRequest) {
     res.cookies.set("token", token, {
         httpOnly: true,
         path: "/",
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
+        sameSite: "none", // 🔑 Changed from "lax" to "none" to allow cross-origin requests
+        secure: true, // 🔑 Must be true when sameSite is "none"
         maxAge: 60 * 60, // 1h
     });
 

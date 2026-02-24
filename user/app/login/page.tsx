@@ -1,15 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [sessionReplacedMessage, setSessionReplacedMessage] = useState(false);
+
+    useEffect(() => {
+        if (searchParams.get("reason") === "session_replaced") {
+            setSessionReplacedMessage(true);
+        }
+    }, [searchParams]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,6 +31,8 @@ export default function LoginPage() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
+                // 🔐 HttpOnly 쿠키를 응답에서 수신하고 저장하기 위해 필수
+                credentials: 'include',
             });
 
             const data = await res.json();
@@ -31,7 +41,7 @@ export default function LoginPage() {
                 throw new Error(data.error || "Login failed");
             }
 
-            router.push("/mypage");
+            router.push("/workspaces");
             router.refresh();
         } catch (err: any) {
             setError(err.message);
@@ -53,6 +63,11 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-4">
+                    {sessionReplacedMessage && (
+                        <div className="rounded-md bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
+                            다른 기기에서 로그인되어 로그아웃되었습니다. 다시 로그인해 주세요.
+                        </div>
+                    )}
                     {error && (
                         <div className="rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
                             {error}

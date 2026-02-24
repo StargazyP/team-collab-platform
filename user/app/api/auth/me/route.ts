@@ -12,12 +12,20 @@ export async function GET(request: NextRequest) {
         const cookieStore = await cookies();
         const token = cookieStore.get("token")?.value;
 
+        console.log("🔐 /api/auth/me - Token from cookie:", token ? "exists" : "missing");
+
         if (!token) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
         }
 
         // 2. 토큰 검증
-        const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        let decoded: JwtPayload;
+        try {
+            decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        } catch (err: any) {
+            console.error("Token verification failed:", err.message);
+            return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+        }
 
         // sub는 string일 수 있으므로 number로 변환
         const userId = Number(decoded.sub);
@@ -40,6 +48,8 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
+        console.log("✅ User found:", user.id, user.email);
+
         // 5. 결과 반환
         return NextResponse.json({ user });
     } catch (error) {
@@ -47,3 +57,4 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
+

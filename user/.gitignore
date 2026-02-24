@@ -29,18 +29,27 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
 # ===============================
-# Environment variables (IMPORTANT)
+# 환경 변수 (보안 - 절대 커밋 금지)
 # ===============================
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# ✅ allow example env
+.env.*
 !.env.example
+# env.template (이름이 .env로 안 시작하므로 위 규칙에 안 걸림 → 커밋 가능)
+
+# ===============================
+# 인증서 / 키 (로컬 개발용)
+# ===============================
+*.pem
+*.key
+*.crt
+*.p12
+localhost+2.pem
+localhost+2-key.pem
+certbot/conf/
+certbot/www/
 
 # ===============================
 # OS / IDE
@@ -54,7 +63,7 @@ Thumbs.db
 *~
 
 # ===============================
-# Vercel
+# Vercel / 배포
 # ===============================
 .vercel
 
@@ -62,8 +71,11 @@ Thumbs.db
 # Git
 # ===============================
 .git/
+*.orig
 
 # ===============================
-# Docs
+# 기타
 # ===============================
-*.md
+*.tsbuildinfo
+.env.backup
+.env.*.backup

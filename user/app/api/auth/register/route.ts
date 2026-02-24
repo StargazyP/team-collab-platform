@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/db";
+import { getAuthCookieOptions } from "@/lib/cookie";
 
 const SECRET = process.env.JWT_SECRET;
 
@@ -79,13 +80,7 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        res.cookies.set("token", token, {
-            httpOnly: true,
-            path: "/",
-            sameSite: "lax",
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 60 * 60,
-        });
+        res.cookies.set("token", token, getAuthCookieOptions());
 
         return res;
     } catch (error) {

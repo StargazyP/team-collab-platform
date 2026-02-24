@@ -147,3 +147,22 @@ export async function isTodoCreator(
 
     return rows[0].createdBy === userId;
 }
+
+/**
+ * 채널 접근 권한 (워크스페이스 멤버이거나 채널 멤버)
+ */
+export async function canAccessChannel(
+    userId: number,
+    channelId: number,
+    channelWorkspaceId: number,
+    isPrivate: boolean
+): Promise<boolean> {
+    const wsMember = await isWorkspaceMember(userId, channelWorkspaceId);
+    if (!wsMember) return false;
+    if (!isPrivate) return true;
+    const [rows] = await db.query(
+        `SELECT id FROM channel_members WHERE channelId = ? AND userId = ?`,
+        [channelId, userId]
+    ) as any[];
+    return rows && rows.length > 0;
+}
