@@ -45,10 +45,10 @@ export default function HuddleLayoutWrapper({
           className={
             showFullHuddle
               ? 'flex flex-col flex-1 min-h-0 min-w-0'
-              : `fixed top-16 right-4 z-50 w-64 h-44 rounded-lg overflow-hidden shadow-xl bg-gray-900 cursor-pointer transition-all ${
+                  : `fixed top-16 right-4 z-50 w-64 h-44 rounded-lg overflow-hidden shadow-xl bg-default-900 cursor-pointer transition-all ${
                   showPip && isSpeaking
-                    ? 'ring-[3px] ring-green-500 border-2 border-green-500/80 shadow-[0_0_12px_rgba(34,197,94,0.5)]'
-                    : 'border-2 border-[#4A154B] hover:ring-2 hover:ring-[#4A154B]'
+                    ? 'ring-[3px] ring-success-500 border-2 border-success-500/80 shadow-[0_0_12px_rgba(34,197,94,0.5)]'
+                    : 'border-2 border-primary hover:ring-2 hover:ring-primary'
                 }`
           }
           aria-label={showPip ? '허들로 돌아가기' : undefined}

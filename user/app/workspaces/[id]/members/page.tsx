@@ -145,7 +145,7 @@ export default function WorkspaceMembersPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-default-500">Loading...</div>
       </div>
     );
   }
@@ -153,41 +153,41 @@ export default function WorkspaceMembersPage() {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-bold text-gray-900">멤버 관리</h1>
+        <h1 className="text-xl font-bold text-foreground">멤버 관리</h1>
         {isOwner && (
           <button
             type="button"
             onClick={openAddModal}
-            className="px-4 py-2 bg-[#4A154B] text-white text-sm font-medium rounded-md hover:bg-[#611f69] transition-colors"
+            className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md hover:bg-primary-600 transition-colors"
           >
             멤버 추가
           </button>
         )}
       </div>
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+        <div className="mb-4 p-4 bg-danger-50 border border-danger-200 text-danger-700 rounded-md text-sm">
           {error}
         </div>
       )}
       {members.length === 0 ? (
-        <p className="text-gray-500">멤버가 없습니다.</p>
+        <p className="text-default-500">멤버가 없습니다.</p>
       ) : (
-        <div className="divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+        <div className="divide-y divide-default-200 border border-default-200 rounded-lg overflow-hidden">
           {members.map((m) => (
-            <div key={m.userId} className="py-4 px-4 flex items-center justify-between bg-white hover:bg-gray-50">
+            <div key={m.userId} className="py-4 px-4 flex items-center justify-between bg-background hover:bg-content1">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#4A154B] flex items-center justify-center text-white font-semibold text-sm">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold text-sm">
                   {(m.userName || 'U').charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-foreground">
                     {m.userName || `User #${m.userId}`}
                   </span>
-                  <span className="ml-2 text-xs text-gray-500">({m.role})</span>
+                  <span className="ml-2 text-xs text-default-500">({m.role})</span>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-default-400">
                   <FormattedDate value={m.joinedAt} variant="date" />
                 </span>
                 {isOwner && m.role !== 'owner' && (
@@ -213,7 +213,7 @@ export default function WorkspaceMembersPage() {
                       }
                     }}
                     disabled={removingUserId === m.userId}
-                    className="text-xs text-red-600 hover:text-red-700 hover:underline disabled:opacity-50"
+                    className="text-xs text-danger-600 hover:text-danger-700 hover:underline disabled:opacity-50"
                   >
                     {removingUserId === m.userId ? '처리 중...' : '내보내기'}
                   </button>
@@ -225,11 +225,11 @@ export default function WorkspaceMembersPage() {
       )}
 
       {addModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">멤버 추가</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/50">
+          <div className="bg-background rounded-lg shadow-xl w-full max-w-md mx-4 p-6">
+            <h2 className="text-lg font-semibold text-foreground mb-4">멤버 추가</h2>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-default-700 mb-2">
                 사용자 검색 (이메일 또는 이름)
               </label>
               <input
@@ -237,47 +237,47 @@ export default function WorkspaceMembersPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="검색어 입력 (2자 이상)"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A154B] focus:border-transparent"
+                className="w-full px-3 py-2 border border-default-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 autoFocus
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-default-700 mb-2">
                 역할
               </label>
               <select
                 value={addRole}
                 onChange={(e) => setAddRole(e.target.value as 'member' | 'admin')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A154B]"
+                className="w-full px-3 py-2 border border-default-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="member">멤버</option>
                 <option value="admin">관리자</option>
               </select>
             </div>
             {searchLoading && (
-              <div className="text-sm text-gray-500 mb-2">검색 중...</div>
+              <div className="text-sm text-default-500 mb-2">검색 중...</div>
             )}
             {searchQuery.length >= 2 && !searchLoading && (
-              <div className="mb-4 max-h-48 overflow-y-auto border border-gray-200 rounded-md divide-y divide-gray-100">
+              <div className="mb-4 max-h-48 overflow-y-auto border border-default-200 rounded-md divide-y divide-default-100">
                 {searchResults.length === 0 ? (
-                  <div className="py-4 px-3 text-sm text-gray-500 text-center">
+                  <div className="py-4 px-3 text-sm text-default-500 text-center">
                     검색 결과가 없습니다.
                   </div>
                 ) : (
                   searchResults.map((u) => (
                     <div
                       key={u.id}
-                      className="flex items-center justify-between py-3 px-3 hover:bg-gray-50"
+                      className="flex items-center justify-between py-3 px-3 hover:bg-content1"
                     >
                       <div>
-                        <div className="font-medium text-gray-900">{u.name}</div>
-                        <div className="text-xs text-gray-500">{u.email}</div>
+                        <div className="font-medium text-foreground">{u.name}</div>
+                        <div className="text-xs text-default-500">{u.email}</div>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleAddMember(u)}
                         disabled={addingUserId === u.id}
-                        className="px-3 py-1 text-sm bg-[#4A154B] text-white rounded hover:bg-[#611f69] disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {addingUserId === u.id ? '추가 중...' : '추가'}
                       </button>
@@ -290,7 +290,7 @@ export default function WorkspaceMembersPage() {
               <button
                 type="button"
                 onClick={() => setAddModalOpen(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-default-700 bg-content1 rounded-md hover:bg-content2"
               >
                 닫기
               </button>

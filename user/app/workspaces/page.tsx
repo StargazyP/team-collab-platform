@@ -73,23 +73,23 @@ export default function WorkspacesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-900">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">워크스페이스</h1>
-            <p className="text-sm text-gray-600 mt-0.5">내 워크스페이스 목록</p>
+            <h1 className="text-2xl font-bold text-foreground">워크스페이스</h1>
+            <p className="text-sm text-default-600 mt-0.5">내 워크스페이스 목록</p>
           </div>
           <Link
             href="/mypage"
-            className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
+            className="w-9 h-9 rounded-full bg-content2 flex items-center justify-center hover:bg-content3 transition-colors text-foreground"
             title="마이페이지"
             aria-label="마이페이지"
           >
@@ -101,7 +101,7 @@ export default function WorkspacesPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+          <div className="mb-4 p-4 bg-danger-50 border border-danger-200 text-danger-700 rounded-md text-sm">
             {error}
           </div>
         )}
@@ -109,18 +109,18 @@ export default function WorkspacesPage() {
         {!showForm ? (
           <button
             onClick={() => setShowForm(true)}
-            className="mb-6 px-4 py-2 bg-[#4A154B] text-white rounded-md hover:bg-[#611f69] font-medium"
+            className="mb-6 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-600 font-medium transition-colors"
           >
             + 새 워크스페이스
           </button>
         ) : (
-          <form onSubmit={handleCreate} className="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+          <form onSubmit={handleCreate} className="mb-6 p-4 border border-default-200 rounded-lg bg-content1">
             <input
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="워크스페이스 이름"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 mb-2"
+              className="w-full px-3 py-2 border border-default-300 rounded-md bg-background text-foreground mb-2 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
               required
               autoFocus
             />
@@ -129,20 +129,20 @@ export default function WorkspacesPage() {
               value={newDesc}
               onChange={(e) => setNewDesc(e.target.value)}
               placeholder="설명 (선택)"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 text-sm mb-3"
+              className="w-full px-3 py-2 border border-default-300 rounded-md bg-background text-foreground text-sm mb-3 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
             />
             <div className="flex gap-2">
               <button
                 type="submit"
                 disabled={submitting || !newName.trim()}
-                className="px-4 py-2 bg-[#4A154B] text-white rounded-md hover:bg-[#611f69] disabled:opacity-50"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-600 disabled:opacity-50 transition-colors"
               >
                 {submitting ? '생성 중...' : '생성'}
               </button>
               <button
                 type="button"
                 onClick={() => { setShowForm(false); setNewName(''); setNewDesc(''); }}
-                className="px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-md hover:bg-gray-50"
+                className="px-4 py-2 border border-default-300 bg-content1 text-foreground rounded-md hover:bg-content2 transition-colors"
               >
                 취소
               </button>
@@ -152,16 +152,16 @@ export default function WorkspacesPage() {
 
         <div className="space-y-2">
           {workspaces.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">워크스페이스가 없습니다.</div>
+            <div className="text-center py-12 text-default-500">워크스페이스가 없습니다.</div>
           ) : (
             workspaces.map((ws) => (
               <Link
                 key={ws.id}
                 href={`/workspaces/${ws.id}`}
-                className="block p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                className="block p-4 border border-default-200 rounded-lg hover:bg-content1 hover:border-primary-300 transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">{ws.name}</h3>
-                {ws.description && <p className="text-sm text-gray-600 mt-1">{ws.description}</p>}
+                <h3 className="font-semibold text-foreground">{ws.name}</h3>
+                {ws.description && <p className="text-sm text-default-600 mt-1">{ws.description}</p>}
               </Link>
             ))
           )}

@@ -12,100 +12,41 @@ const WS_URL = getWsUrl();
 
 export interface Notification {
   id: number;
+  userId: number;
+  type: 'mention' | 'message';
   messageId: number;
   channelId: number;
   channelName: string;
   senderId: number;
   senderName: string;
   contentPreview: string;
+  isRead: number;
   createdAt: string;
 }
 
-export function useNotificationWs(workspaceId: string | null) {
+const MAX_NOTIFICATIONS = 50;
+
+function mergeNotifications(
+  existing: Notification[],
+  incoming: Notification[]
+): Notification[] {
+  const map = new Map<number, Notification>();
+  for (const n of existing) map.set(n.id, n);
+  for (const n of incoming) map.set(n.id, n);
+  return Array.from(map.values())
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, MAX_NOTIFICATIONS);
+}
+
+export function useNotificationWs(workspaceId: number | null) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [connected, setConnected] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
-  const tokenRef = useRef<string | null>(null);
 
-  const addNotification = useCallback((n: Notification) => {
-    setNotifications((prev) => [n, ...prev].slice(0, 50));
+  const addNotification = useCallback((notification: Notification) => {
+    setNotifications((prev) => mergeNotifications(prev, [notification]));
     setUnreadCount((c) => c + 1);
   }, []);
-
-  const mergeNotifications = useCallback((list: Notification[]) => {
-    if (list.length === 0) return;
-    setNotifications((prev) => {
-      const byId = new Map(prev.map((n) => [n.id, n]));
-      for (const n of list) {
-        const item = { ...n, id: Number(n.id), messageId: Number(n.messageId), channelId: Number(n.channelId), senderId: Number(n.senderId) };
-        if (!byId.has(item.id)) byId.set(item.id, item);
-      }
-      return Array.from(byId.values())
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-        .slice(0, 50);
-    });
-    setUnreadCount((c) => Math.max(c, list.length));
-  }, []);
-
-  useEffect(() => {
-    if (!workspaceId) return;
-
-    let mounted = true;
-
-    const connect = async () => {
-      try {
-        const res = await fetch('/api/auth/ws-token', { credentials: 'include' });
-        if (!res.ok || !mounted) return;
-        const data = await res.json();
-        const token = data.token;
-        if (!token || !mounted) return;
-
-        tokenRef.current = token;
-        const url = `${WS_URL}?token=${encodeURIComponent(token)}`;
-        const ws = new WebSocket(url);
-        wsRef.current = ws;
-
-        ws.onopen = () => {
-          if (mounted) setConnected(true);
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.type === 'notification' && data.notification && mounted) {
-              addNotification(data.notification);
-            }
-          } catch {
-            // ignore
-          }
-        };
-
-        ws.onclose = () => {
-          if (mounted) {
-            setConnected(false);
-            wsRef.current = null;
-          }
-        };
-
-        ws.onerror = () => {
-          if (mounted) setConnected(false);
-        };
-      } catch {
-        // ignore
-      }
-    };
-
-    connect();
-
-    return () => {
-      mounted = false;
-      if (wsRef.current?.readyState === WebSocket.OPEN) {
-        wsRef.current.close();
-      }
-      wsRef.current = null;
-    };
-  }, [workspaceId, addNotification]);
 
   const clearUnread = useCallback(() => {
     setUnreadCount(0);
@@ -115,5 +56,56 @@ export function useNotificationWs(workspaceId: string | null) {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
-  return { notifications, unreadCount, connected, clearUnread, removeNotification, mergeNotifications };
+  const mergeFromApi = useCallback((apiNotifications: Notification[]) => {
+    setNotifications((prev) => mergeNotifications(prev, apiNotifications));
+    setUnreadCount(apiNotifications.filter((n) => !n.isRead).length);
+  }, []);
+
+  useEffect(() => {
+    if (!workspaceId) return;
+
+    let ws: WebSocket | null = null;
+
+    (async () => {
+      try {
+        const tokenRes = await fetch('/api/auth/ws-token', { credentials: 'include' });
+        if (!tokenRes.ok) return;
+        const { token } = await tokenRes.json();
+
+        const url = `${WS_URL}?token=${encodeURIComponent(token)}`;
+        ws = new WebSocket(url);
+        wsRef.current = ws;
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data.type === 'notification' && data.notification) {
+              addNotification(data.notification);
+            }
+          } catch {
+            // ignore
+          }
+        };
+
+        ws.onclose = () => { wsRef.current = null; };
+        ws.onerror = () => { /* handled by onclose */ };
+      } catch {
+        // ignore
+      }
+    })();
+
+    return () => {
+      ws?.close();
+      wsRef.current = null;
+    };
+  }, [workspaceId, addNotification]);
+
+  return {
+    notifications,
+    unreadCount,
+    addNotification,
+    clearUnread,
+    removeNotification,
+    mergeFromApi,
+  };
 }

@@ -50,7 +50,7 @@ export default function WorkspaceDetailPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-default-500">Loading...</div>
       </div>
     );
   }
@@ -58,8 +58,8 @@ export default function WorkspaceDetailPage() {
   if (error || !workspace) {
     return (
       <div className="p-6">
-        <p className="text-red-600">{error || 'Workspace not found'}</p>
-        <Link href="/workspaces" className="text-gray-600 hover:underline mt-2 inline-block">
+        <p className="text-danger-600">{error || 'Workspace not found'}</p>
+        <Link href="/workspaces" className="text-default-600 hover:underline mt-2 inline-block">
           ← 워크스페이스 목록
         </Link>
       </div>
@@ -68,15 +68,15 @@ export default function WorkspaceDetailPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold text-gray-900">{workspace.name}</h1>
+      <h1 className="text-xl font-bold text-foreground">{workspace.name}</h1>
       {workspace.description && (
-        <p className="text-gray-600 mt-2">{workspace.description}</p>
+        <p className="text-default-600 mt-2">{workspace.description}</p>
       )}
       <div className="mt-6 flex items-center gap-4">
         <button
           type="button"
           onClick={() => enterHuddle(workspace.id, workspace.name)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#4A154B] text-white rounded-lg hover:bg-[#611f69] transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary-600 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@ export default function WorkspaceDetailPage() {
           허들 입장
         </button>
       </div>
-      <p className="text-sm text-gray-500 mt-6">
+      <p className="text-sm text-default-500 mt-6">
         좌측 사이드바에서 TODO List 또는 멤버 관리로 이동할 수 있습니다.
       </p>
     </div>

@@ -110,14 +110,15 @@ function findRangeToReplace(editor: HTMLDivElement, range: Range): Range | null 
   const targetStartChar = beforeCursor.length - toDeleteLen;
 
   const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
-  let current: Node | null = walker.currentNode;
+  let current: Node | null = walker.nextNode();
   let pos = 0;
 
   while (current) {
     const len = (current.textContent || '').length;
     if (pos + len >= targetStartChar) {
+      const offset = Math.min(targetStartChar - pos, len);
       const replaceRange = document.createRange();
-      replaceRange.setStart(current, targetStartChar - pos);
+      replaceRange.setStart(current, offset);
       replaceRange.setEnd(range.endContainer, range.endOffset);
       return replaceRange;
     }
@@ -139,7 +140,7 @@ function insertMentionAtCursor(editor: HTMLDivElement, member: MentionMember, _q
   const span = document.createElement('span');
   span.setAttribute('data-mention', String(member.userId));
   span.setAttribute('contenteditable', 'false');
-  span.className = 'mention bg-[#4A154B]/10 text-[#4A154B] px-1 rounded';
+  span.className = 'mention bg-primary/10 text-primary px-1 rounded';
   span.textContent = mentionText;
 
   targetRange.deleteContents();
@@ -279,8 +280,8 @@ export default function MessageInput({
   }, [mentionOpen, mentionIndex]);
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white overflow-hidden">
-      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-gray-100 bg-gray-50">
+    <div className="border border-default-200 rounded-lg bg-background overflow-hidden">
+      <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-default-100 bg-content1">
         {TOOLBAR_BUTTONS.map(({ cmd, label, icon: Icon, value }) => (
           <button
             key={cmd}
@@ -291,7 +292,7 @@ export default function MessageInput({
                 : execFormat(cmd)
             }
             disabled={disabled}
-            className="w-8 h-8 flex items-center justify-center rounded text-gray-600 hover:bg-gray-200 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded text-default-600 hover:bg-content2 hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             title={label}
             aria-label={label}
           >
@@ -303,24 +304,24 @@ export default function MessageInput({
       <form onSubmit={handleSubmit}>
         <div className="relative">
           {isEmpty && (
-            <span className="absolute left-4 top-3 text-gray-400 pointer-events-none">
+            <span className="absolute left-4 top-3 text-default-400 pointer-events-none">
               {placeholder}
             </span>
           )}
           {mentionOpen && filteredMembers.length > 0 && (
             <div
               ref={mentionListRef}
-              className="absolute bottom-full left-4 right-4 mb-1 max-h-40 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1"
+              className="absolute bottom-full left-4 right-4 mb-1 max-h-40 overflow-y-auto bg-background border border-default-200 rounded-lg shadow-lg z-50 py-1"
             >
-              <div className="px-2 py-1 text-xs text-gray-500 border-b border-gray-100">
+              <div className="px-2 py-1 text-xs text-default-500 border-b border-default-100">
                 멤버 태그
               </div>
               {filteredMembers.map((m, i) => (
                 <button
                   key={m.userId}
                   type="button"
-                  className={`w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 ${
-                    i === mentionIndex ? 'bg-[#4A154B]/10 text-[#4A154B]' : 'text-gray-900'
+                  className={`w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-content1 ${
+                    i === mentionIndex ? 'bg-primary/10 text-primary' : 'text-foreground'
                   }`}
                   onClick={() => {
                     if (editorRef.current) {
@@ -329,7 +330,7 @@ export default function MessageInput({
                     }
                   }}
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#4A154B] flex items-center justify-center text-white text-xs font-semibold shrink-0">
+                  <span className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-semibold shrink-0">
                     {(m.userName || '?').charAt(0).toUpperCase()}
                   </span>
                   <span>{m.userName}</span>
@@ -342,15 +343,15 @@ export default function MessageInput({
             contentEditable={!disabled}
             onInput={handleInput}
             onKeyDown={handleKeyDown}
-            className="min-h-[80px] max-h-[200px] overflow-y-auto px-4 py-3 text-gray-900 outline-none focus:ring-0 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:pl-1 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:pl-1 [&_li]:my-0.5 [&_.mention]:bg-[#4A154B]/10 [&_.mention]:text-[#4A154B] [&_.mention]:px-1 [&_.mention]:rounded"
+            className="min-h-[80px] max-h-[200px] overflow-y-auto px-4 py-3 text-foreground outline-none focus:ring-0 [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:pl-1 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:pl-1 [&_li]:my-0.5 [&_.mention]:bg-primary/10 [&_.mention]:text-primary [&_.mention]:px-1 [&_.mention]:rounded"
             suppressContentEditableWarning
           />
         </div>
-        <div className="flex justify-end px-2 py-2 border-t border-gray-100">
+        <div className="flex justify-end px-2 py-2 border-t border-default-100">
           <button
             type="submit"
             disabled={isEmpty || disabled}
-            className="px-4 py-2 bg-[#4A154B] text-white rounded-md hover:bg-[#611f69] disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
           >
             전송
           </button>

@@ -9,10 +9,10 @@ interface WorkspaceHeaderProps {
 
 export default function WorkspaceHeader({ workspaceId }: WorkspaceHeaderProps) {
   return (
-    <header className="h-12 border-b border-gray-200 bg-white px-4 flex items-center justify-between">
+    <header className="h-12 border-b border-default-200 bg-background px-4 flex items-center justify-between">
       <Link
         href="/workspaces"
-        className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center gap-1"
+        className="text-default-600 hover:text-foreground text-sm font-medium flex items-center gap-1"
       >
         <span>←</span>
         <span>워크스페이스 목록</span>
@@ -21,7 +21,7 @@ export default function WorkspaceHeader({ workspaceId }: WorkspaceHeaderProps) {
         <NotificationBell workspaceId={workspaceId} />
         <Link
           href="/mypage"
-          className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors shrink-0"
+          className="w-9 h-9 rounded-full bg-content2 flex items-center justify-center hover:bg-default-300 transition-colors shrink-0"
           title="마이페이지"
           aria-label="마이페이지"
         >

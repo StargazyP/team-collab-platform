@@ -27,11 +27,11 @@ export default async function WorkspaceLayout({ children, params }: LayoutProps)
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <WorkspaceHeader workspaceId={String(id)} />
       <div className="flex">
         <WorkspaceSidebar workspaceName={workspaceName} workspaceOwnerId={workspaceOwnerId} />
-        <main className="flex-1 min-w-0 bg-[#ffffff] min-h-[calc(100vh-4rem)] relative flex flex-col">
+        <main className="flex-1 min-w-0 bg-background min-h-[calc(100vh-4rem)] relative flex flex-col">
           <HuddleLayoutProvider>
             <HuddleLayoutWrapper
               workspaceId={String(id)}

@@ -42,7 +42,7 @@ function DeviceSelectDropdown({ kind, label, track, disabled }: DeviceSelectDrop
         type="button"
         onClick={() => !disabled && setIsOpen((o) => !o)}
         disabled={disabled}
-        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-700/80 hover:bg-gray-600/80 text-white text-sm disabled:opacity-50 transition-colors min-w-[140px]"
+        className="flex items-center gap-2 px-3 py-2 rounded-lg bg-default-700/80 hover:bg-default-600/80 text-white text-sm disabled:opacity-50 transition-colors min-w-[140px]"
       >
         <span className="truncate flex-1 text-left">
           {devices.find((d) => d.deviceId === activeDeviceId)?.label || label}
@@ -57,7 +57,7 @@ function DeviceSelectDropdown({ kind, label, track, disabled }: DeviceSelectDrop
         </svg>
       </button>
       {isOpen && (
-        <ul className="absolute bottom-full left-0 mb-2 py-2 rounded-lg bg-gray-800 shadow-lg max-h-48 overflow-y-auto z-50 min-w-[200px]">
+        <ul className="absolute bottom-full left-0 mb-2 py-2 rounded-lg bg-default-800 shadow-lg max-h-48 overflow-y-auto z-50 min-w-[200px]">
           {devices.map((device) => (
             <li key={device.deviceId}>
               <button
@@ -70,8 +70,8 @@ function DeviceSelectDropdown({ kind, label, track, disabled }: DeviceSelectDrop
                     setIsOpen(false);
                   }
                 }}
-                className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-700 transition-colors ${
-                  device.deviceId === activeDeviceId ? 'text-white bg-gray-700/50' : 'text-gray-300'
+                className={`w-full px-4 py-2 text-left text-sm hover:bg-default-700 transition-colors ${
+                  device.deviceId === activeDeviceId ? 'text-white bg-default-700/50' : 'text-default-300'
                 }`}
               >
                 {device.label || `Device ${device.deviceId.slice(0, 8)}`}
@@ -94,10 +94,10 @@ export default function HuddleControlBar({ canUseMedia = true }: HuddleControlBa
   const { stopTracks: _stopTracks, ...restButtonProps } = buttonProps;
 
   return (
-    <div className="flex flex-col gap-4 p-4 bg-gray-900/95 border-t border-gray-700 shrink-0">
+    <div className="flex flex-col gap-4 p-4 bg-default-900/95 border-t border-default-700 shrink-0">
       {/* 입출력 디바이스 선택 */}
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-gray-400 text-sm font-medium shrink-0">입출력</span>
+        <span className="text-default-400 text-sm font-medium shrink-0">입출력</span>
         <div className="flex flex-wrap gap-2">
           <DeviceSelectDropdown
             kind="audioinput"
@@ -119,7 +119,7 @@ export default function HuddleControlBar({ canUseMedia = true }: HuddleControlBa
       <div className="flex items-center justify-center gap-4">
         {canUseMedia && (
           <>
-            <div className="flex items-center gap-1 [&_.lk-button]:!bg-gray-700 [&_.lk-button]:!text-white [&_.lk-button]:!rounded-lg [&_.lk-button]:!px-4 [&_.lk-button]:!py-2 [&_.lk-button:hover]:!bg-gray-600">
+            <div className="flex items-center gap-1 [&_.lk-button]:!bg-default-700 [&_.lk-button]:!text-white [&_.lk-button]:!rounded-lg [&_.lk-button]:!px-4 [&_.lk-button]:!py-2 [&_.lk-button:hover]:!bg-default-600">
               <TrackToggle source={Track.Source.Microphone} showIcon>
                 <span className="ml-1">마이크</span>
               </TrackToggle>
@@ -127,13 +127,13 @@ export default function HuddleControlBar({ canUseMedia = true }: HuddleControlBa
                 <span className="ml-1">카메라</span>
               </TrackToggle>
             </div>
-            <div className="w-px h-8 bg-gray-600" />
+            <div className="w-px h-8 bg-default-600" />
           </>
         )}
         <button
           {...restButtonProps}
           type="button"
-          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-danger-600 hover:bg-danger-500 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

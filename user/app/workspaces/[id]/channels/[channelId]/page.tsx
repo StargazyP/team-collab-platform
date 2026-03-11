@@ -176,7 +176,7 @@ export default function ChannelChatPage() {
   if (loading) {
     return (
       <div className="p-6">
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-default-500">Loading...</div>
       </div>
     );
   }
@@ -184,10 +184,10 @@ export default function ChannelChatPage() {
   if (error || !channel) {
     return (
       <div className="p-6">
-        <p className="text-red-600">{error || 'Channel not found'}</p>
+        <p className="text-danger-600">{error || 'Channel not found'}</p>
         <Link
           href={`/workspaces/${workspaceId}/channels`}
-          className="text-gray-600 hover:underline mt-2 inline-block"
+          className="text-default-600 hover:underline mt-2 inline-block"
         >
           ← 채널 목록
         </Link>
@@ -209,13 +209,13 @@ export default function ChannelChatPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)]">
-      <div className="border-b border-gray-200 px-6 py-3 flex flex-col gap-2">
+      <div className="border-b border-default-200 px-6 py-3 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 font-medium">#</span>
-            <h1 className="text-lg font-bold text-gray-900">{channel.name}</h1>
+            <span className="text-default-500 font-medium">#</span>
+            <h1 className="text-lg font-bold text-foreground">{channel.name}</h1>
             {connected && (
-              <span className="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded">
+              <span className="text-xs text-success-600 bg-success-50 px-2 py-0.5 rounded">
                 실시간
               </span>
             )}
@@ -224,7 +224,7 @@ export default function ChannelChatPage() {
             <button
             type="button"
             onClick={() => setHuddleOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-[#4A154B] bg-[#4A154B]/10 rounded-md hover:bg-[#4A154B]/20 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-primary bg-primary/10 rounded-md hover:bg-primary/20 transition-colors"
             title="허들 시작 (음성/영상 통화)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -236,7 +236,7 @@ export default function ChannelChatPage() {
           </button>
           <Link
             href={`/workspaces/${workspaceId}/channels`}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm text-default-600 hover:text-foreground"
           >
             채널 목록
           </Link>
@@ -249,13 +249,13 @@ export default function ChannelChatPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="메시지 검색..."
-            className="flex-1 max-w-xs px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A154B]/50 focus:border-[#4A154B]"
+            className="flex-1 max-w-xs px-3 py-1.5 text-sm border border-default-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
           />
           <button
             type="button"
             onClick={handleSearch}
             disabled={searching}
-            className="px-3 py-1.5 text-sm font-medium text-[#4A154B] border border-[#4A154B] rounded-md hover:bg-[#4A154B]/5 disabled:opacity-50"
+            className="px-3 py-1.5 text-sm font-medium text-primary border border-primary rounded-md hover:bg-primary/5 disabled:opacity-50"
           >
             {searching ? '검색 중...' : '검색'}
           </button>
@@ -263,7 +263,7 @@ export default function ChannelChatPage() {
             <button
               type="button"
               onClick={clearSearch}
-              className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
+              className="px-3 py-1.5 text-sm text-default-600 hover:text-foreground"
             >
               검색 해제
             </button>
@@ -274,30 +274,30 @@ export default function ChannelChatPage() {
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {searchResults !== null ? (
           <>
-            <div className="text-sm text-gray-500 mb-2">
+            <div className="text-sm text-default-500 mb-2">
               &quot;{searchQuery}&quot; 검색 결과 {searchResults.length}건
             </div>
             {searchResults.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 text-sm">
+              <div className="text-center py-8 text-default-500 text-sm">
                 검색 결과가 없습니다.
               </div>
             ) : (
               searchResults.map((m) => (
                 <div key={m.id} className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#4A154B] flex items-center justify-center text-white text-sm font-semibold shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold shrink-0">
                     {(m.userName || 'U').charAt(0).toUpperCase()}
                   </div>
                   <div>
                     <div className="flex items-baseline gap-2">
-                      <span className="font-semibold text-gray-900 text-sm">
+                      <span className="font-semibold text-foreground text-sm">
                         {m.userName || `User #${m.userId}`}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-default-400">
                         <FormattedDate value={m.createdAt} variant="datetime" />
                       </span>
                     </div>
                     <div
-                      className="text-gray-800 mt-0.5 break-words [&_b]:font-bold [&_i]:italic [&_u]:underline [&_s]:line-through [&_ul]:list-disc [&_ul]:ml-4 [&_li]:ml-2 [&_ol]:list-decimal [&_ol]:ml-4 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-2 [&_blockquote]:text-gray-600 [&_blockquote]:my-1 [&_.mention]:bg-[#4A154B]/10 [&_.mention]:text-[#4A154B] [&_.mention]:px-1 [&_.mention]:rounded"
+                      className="text-default-800 mt-0.5 break-words [&_b]:font-bold [&_i]:italic [&_u]:underline [&_s]:line-through [&_ul]:list-disc [&_ul]:ml-4 [&_li]:ml-2 [&_ol]:list-decimal [&_ol]:ml-4 [&_blockquote]:border-l-2 [&_blockquote]:border-default-300 [&_blockquote]:pl-2 [&_blockquote]:text-default-600 [&_blockquote]:my-1 [&_.mention]:bg-primary/10 [&_.mention]:text-primary [&_.mention]:px-1 [&_.mention]:rounded"
                       dangerouslySetInnerHTML={{ __html: sanitizeHtml(m.content) || m.content }}
                     />
                   </div>
@@ -306,26 +306,26 @@ export default function ChannelChatPage() {
             )}
           </>
         ) : messages.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 text-sm">
+          <div className="text-center py-12 text-default-500 text-sm">
             메시지가 없습니다. 첫 메시지를 작성해보세요.
           </div>
         ) : (
           messages.map((m) => (
             <div key={m.id} className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#4A154B] flex items-center justify-center text-white text-sm font-semibold shrink-0">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-semibold shrink-0">
                 {(m.userName || 'U').charAt(0).toUpperCase()}
               </div>
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="font-semibold text-gray-900 text-sm">
+                  <span className="font-semibold text-foreground text-sm">
                     {m.userName || `User #${m.userId}`}
                   </span>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-default-400">
                     <FormattedDate value={m.createdAt} variant="datetime" />
                   </span>
                 </div>
                 <div
-                  className="text-gray-800 mt-0.5 break-words [&_b]:font-bold [&_i]:italic [&_u]:underline [&_s]:line-through [&_ul]:list-disc [&_ul]:ml-4 [&_li]:ml-2 [&_ol]:list-decimal [&_ol]:ml-4 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-2 [&_blockquote]:text-gray-600 [&_blockquote]:my-1 [&_.mention]:bg-[#4A154B]/10 [&_.mention]:text-[#4A154B] [&_.mention]:px-1 [&_.mention]:rounded"
+                  className="text-default-800 mt-0.5 break-words [&_b]:font-bold [&_i]:italic [&_u]:underline [&_s]:line-through [&_ul]:list-disc [&_ul]:ml-4 [&_li]:ml-2 [&_ol]:list-decimal [&_ol]:ml-4 [&_blockquote]:border-l-2 [&_blockquote]:border-default-300 [&_blockquote]:pl-2 [&_blockquote]:text-default-600 [&_blockquote]:my-1 [&_.mention]:bg-primary/10 [&_.mention]:text-primary [&_.mention]:px-1 [&_.mention]:rounded"
                   dangerouslySetInnerHTML={{ __html: sanitizeHtml(m.content) || m.content }}
                 />
               </div>
@@ -335,7 +335,7 @@ export default function ChannelChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-default-200">
         <MessageInput
           onSubmit={handleSubmit}
           disabled={sending}

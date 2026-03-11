@@ -255,16 +255,16 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
 
   return (
     <div className="flex shrink-0">
-      <aside className="w-[260px] flex flex-col bg-[#3f0e40] min-h-[calc(100vh-4rem)]">
-        <div className="h-12 px-3 flex items-center border-b border-[#522653]">
+      <aside className="w-[260px] flex flex-col bg-sidebar border-r border-sidebar-border min-h-[calc(100vh-4rem)]">
+        <div className="h-12 px-3 flex items-center border-b border-sidebar-border">
           <Link
             href={basePath}
             className="flex items-center gap-2 min-w-0 flex-1"
           >
-            <div className="w-8 h-8 rounded flex items-center justify-center bg-[#1164a3] shrink-0">
-              <WorkspaceIcon className="text-white w-4 h-4" />
+            <div className="w-8 h-8 rounded flex items-center justify-center bg-sidebar-active shrink-0">
+              <WorkspaceIcon className="text-sidebar w-4 h-4" />
             </div>
-            <span className="text-white font-semibold text-sm truncate">
+            <span className="text-sidebar-active font-semibold text-sm truncate">
               {workspaceName || `워크스페이스`}
             </span>
           </Link>
@@ -282,8 +282,8 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                   onClick={() => { setChannelPanelOpen((v) => !v); setDmPanelOpen(false); }}
                   className={`w-full flex items-center gap-3 px-3 py-2 mx-2 rounded text-sm transition-colors ${
                     isActive
-                      ? 'bg-[#1164a3] text-white'
-                      : 'text-[#d1d2d3] hover:bg-[#350d36] hover:text-white'
+                      ? 'bg-sidebar-hover text-sidebar-active'
+                      : 'text-sidebar-text hover:bg-sidebar-hover hover:text-sidebar-active'
                   }`}
                 >
                   <Icon className="shrink-0 opacity-90" />
@@ -301,8 +301,8 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                   onClick={() => { setDmPanelOpen((v) => !v); setChannelPanelOpen(false); }}
                   className={`w-full flex items-center gap-3 px-3 py-2 mx-2 rounded text-sm transition-colors ${
                     isActive
-                      ? 'bg-[#1164a3] text-white'
-                      : 'text-[#d1d2d3] hover:bg-[#350d36] hover:text-white'
+                      ? 'bg-sidebar-hover text-sidebar-active'
+                      : 'text-sidebar-text hover:bg-sidebar-hover hover:text-sidebar-active'
                   }`}
                 >
                   <Icon className="shrink-0 opacity-90" />
@@ -323,8 +323,8 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                 href={fullHref}
                 className={`flex items-center gap-3 px-3 py-2 mx-2 rounded text-sm transition-colors ${
                   isActive
-                    ? 'bg-[#1164a3] text-white'
-                    : 'text-[#d1d2d3] hover:bg-[#350d36] hover:text-white'
+                    ? 'bg-sidebar-hover text-sidebar-active'
+                    : 'text-sidebar-text hover:bg-sidebar-hover hover:text-sidebar-active'
                 }`}
               >
                 <Icon className="shrink-0 opacity-90" />
@@ -341,13 +341,13 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
           channelPanelOpen ? 'w-[240px]' : 'w-0'
         }`}
       >
-        <div className="w-[240px] h-[calc(100vh-4rem)] flex flex-col bg-[#522653] border-r border-[#3f0e40]">
-          <div className="px-3 py-2 flex items-center justify-between border-b border-[#611f69]">
-            <span className="text-white font-semibold text-sm">채널</span>
+        <div className="w-[240px] h-[calc(100vh-4rem)] flex flex-col bg-sidebar-panel border-r border-sidebar-border">
+          <div className="px-3 py-2 flex items-center justify-between border-b border-sidebar-border-light">
+            <span className="text-sidebar-active font-semibold text-sm">채널</span>
             <button
               type="button"
               onClick={() => setChannelPanelOpen(false)}
-              className="text-[#d1d2d3] hover:text-white p-1"
+              className="text-sidebar-text hover:text-sidebar-active p-1"
               aria-label="닫기"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -357,16 +357,16 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
           </div>
           <div className="flex-1 overflow-y-auto py-2">
             {channelsLoading ? (
-              <div className="px-3 py-4 text-[#d1d2d3] text-sm">로딩 중...</div>
+              <div className="px-3 py-4 text-sidebar-text text-sm">로딩 중...</div>
             ) : (
               <>
                 {channels.map((ch) => (
                   <div
                     key={ch.id}
-                    className={`group flex items-center gap-1 px-3 py-2 text-sm hover:bg-[#350d36] ${
+                    className={`group flex items-center gap-1 px-3 py-2 text-sm hover:bg-sidebar-hover ${
                       pathname === `${basePath}/channels/${ch.id}`
-                        ? 'text-white font-medium bg-[#350d36]'
-                        : 'text-[#d1d2d3]'
+                        ? 'text-sidebar-active font-medium bg-sidebar-hover'
+                        : 'text-sidebar-text'
                     }`}
                   >
                     <Link
@@ -381,7 +381,7 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                         type="button"
                         onClick={(e) => { e.preventDefault(); handleDeleteChannel(ch.id); }}
                         disabled={deletingChannelId === ch.id}
-                        className="shrink-0 p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-[#611f69] text-[#d1d2d3] hover:text-white disabled:opacity-50"
+                        className="shrink-0 p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-sidebar-hover text-sidebar-text hover:text-sidebar-active disabled:opacity-50"
                         aria-label="채널 삭제"
                         title="채널 삭제"
                       >
@@ -401,7 +401,7 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                       value={newChannelName}
                       onChange={(e) => setNewChannelName(e.target.value)}
                       placeholder="채널 이름"
-                      className="w-full px-2 py-1.5 text-sm bg-[#3f0e40] border border-[#611f69] rounded text-white placeholder:text-gray-400"
+                      className="w-full px-2 py-1.5 text-sm bg-sidebar-input border border-sidebar-border-light rounded text-sidebar-active placeholder:text-sidebar-text-muted"
                       required
                       autoFocus
                     />
@@ -409,14 +409,14 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                       <button
                         type="submit"
                         disabled={submitting || !newChannelName.trim()}
-                        className="px-2 py-1 text-xs bg-[#1164a3] text-white rounded hover:bg-[#0d4d7a] disabled:opacity-50"
+                        className="px-2 py-1 text-xs bg-sidebar-active text-sidebar rounded hover:opacity-80 disabled:opacity-50"
                       >
                         생성
                       </button>
                       <button
                         type="button"
                         onClick={() => { setShowChannelForm(false); setNewChannelName(''); }}
-                        className="px-2 py-1 text-xs text-[#d1d2d3] hover:text-white"
+                        className="px-2 py-1 text-xs text-sidebar-text hover:text-sidebar-active"
                       >
                         취소
                       </button>
@@ -426,7 +426,7 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                   <button
                     type="button"
                     onClick={() => setShowChannelForm(true)}
-                    className="w-full px-3 py-2 text-left text-sm text-[#d1d2d3] hover:bg-[#350d36] hover:text-white flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left text-sm text-sidebar-text hover:bg-sidebar-hover hover:text-sidebar-active flex items-center gap-2"
                   >
                     <span className="text-lg">+</span>
                     채널 추가
@@ -444,13 +444,13 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
           dmPanelOpen ? 'w-[240px]' : 'w-0'
         }`}
       >
-        <div className="w-[240px] h-[calc(100vh-4rem)] flex flex-col bg-[#522653] border-r border-[#3f0e40]">
-          <div className="px-3 py-2 flex items-center justify-between border-b border-[#611f69]">
-            <span className="text-white font-semibold text-sm">다이렉트 메시지</span>
+        <div className="w-[240px] h-[calc(100vh-4rem)] flex flex-col bg-sidebar-panel border-r border-sidebar-border">
+          <div className="px-3 py-2 flex items-center justify-between border-b border-sidebar-border-light">
+            <span className="text-sidebar-active font-semibold text-sm">다이렉트 메시지</span>
             <button
               type="button"
               onClick={() => setDmPanelOpen(false)}
-              className="text-[#d1d2d3] hover:text-white p-1"
+              className="text-sidebar-text hover:text-sidebar-active p-1"
               aria-label="닫기"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -460,7 +460,7 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
           </div>
           <div className="flex-1 overflow-y-auto py-2">
             {dmLoading ? (
-              <div className="px-3 py-4 text-[#d1d2d3] text-sm">로딩 중...</div>
+              <div className="px-3 py-4 text-sidebar-text text-sm">로딩 중...</div>
             ) : (
               members.map((m) => (
                 <button
@@ -468,14 +468,14 @@ export default function WorkspaceSidebar({ workspaceName, workspaceOwnerId }: Wo
                   type="button"
                   onClick={() => handleOpenDm(m.userId)}
                   disabled={submitting}
-                  className="w-full px-3 py-2 text-left text-sm hover:bg-[#350d36] text-[#d1d2d3] hover:text-white flex items-center gap-2 disabled:opacity-50"
+                  className="w-full px-3 py-2 text-left text-sm hover:bg-sidebar-hover text-sidebar-text hover:text-sidebar-active flex items-center gap-2 disabled:opacity-50"
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#4A154B] flex items-center justify-center text-white text-xs font-semibold shrink-0">
+                  <span className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-xs font-semibold shrink-0">
                     {(m.userName || '?').charAt(0).toUpperCase()}
                   </span>
                   <span>{m.userName}</span>
                   {currentUserId === m.userId && (
-                    <span className="text-xs text-gray-400">(나)</span>
+                    <span className="text-xs text-default-400">(나)</span>
                   )}
                 </button>
               ))

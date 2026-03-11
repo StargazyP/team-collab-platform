@@ -133,8 +133,8 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
     }, []);
 
     return (
-      <div className={`border border-gray-200 rounded-lg bg-white overflow-hidden ${className}`}>
-        <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-gray-100 bg-gray-50">
+      <div className={`border border-default-200 rounded-lg bg-background overflow-hidden ${className}`}>
+        <div className="flex items-center gap-0.5 px-2 py-1.5 border-b border-default-100 bg-content1">
           {TOOLBAR_BUTTONS.map(({ cmd, label, icon: Icon, value }) => (
             <button
               key={cmd}
@@ -143,7 +143,7 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
                 cmd === 'formatBlock' ? execFormat(cmd, value) : execFormat(cmd)
               }
               disabled={disabled}
-              className="w-8 h-8 flex items-center justify-center rounded text-gray-600 hover:bg-gray-200 hover:text-gray-900 disabled:opacity-50 transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded text-default-600 hover:bg-content2 hover:text-foreground disabled:opacity-50 transition-colors"
               title={label}
               aria-label={label}
             >
@@ -153,7 +153,7 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
         </div>
         <div className="relative">
           {isEmpty && (
-            <span className="absolute left-4 top-3 text-gray-400 pointer-events-none">
+            <span className="absolute left-4 top-3 text-default-400 pointer-events-none">
               {placeholder}
             </span>
           )}
@@ -161,7 +161,7 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(
             ref={editorRef}
             contentEditable={!disabled}
             onInput={updateEmpty}
-            className="outline-none focus:ring-0 px-4 py-3 text-gray-900 overflow-y-auto [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:pl-1 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:pl-1 [&_li]:my-0.5 [&_blockquote]:border-l-2 [&_blockquote]:border-gray-300 [&_blockquote]:pl-2 [&_blockquote]:text-gray-600 [&_blockquote]:my-1"
+            className="outline-none focus:ring-0 px-4 py-3 text-foreground overflow-y-auto [&_ol]:list-decimal [&_ol]:list-outside [&_ol]:ml-5 [&_ol]:pl-1 [&_ul]:list-disc [&_ul]:list-outside [&_ul]:ml-5 [&_ul]:pl-1 [&_li]:my-0.5 [&_blockquote]:border-l-2 [&_blockquote]:border-default-300 [&_blockquote]:pl-2 [&_blockquote]:text-default-600 [&_blockquote]:my-1"
             style={{ minHeight }}
             suppressContentEditableWarning
           />

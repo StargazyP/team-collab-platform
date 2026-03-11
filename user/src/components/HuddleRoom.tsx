@@ -150,23 +150,23 @@ export default function HuddleRoom(props: HuddleRoomProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full bg-gray-100">
-        <div className="text-gray-600">허들에 연결 중...</div>
+      <div className="flex items-center justify-center h-full bg-content1">
+        <div className="text-default-600">허들에 연결 중...</div>
       </div>
     );
   }
 
   if (error || !token || !url || !room) {
     return (
-      <div className="flex flex-col items-center justify-center h-full bg-gray-100 gap-4 p-6">
-        <p className="text-red-600 text-center">{error || '연결할 수 없습니다.'}</p>
-        <p className="text-sm text-gray-500 text-center">
+      <div className="flex flex-col items-center justify-center h-full bg-content1 gap-4 p-6">
+        <p className="text-danger-600 text-center">{error || '연결할 수 없습니다.'}</p>
+        <p className="text-sm text-default-500 text-center">
           LiveKit 설정(LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET)을 확인하세요.
         </p>
         <button
           type="button"
           onClick={fetchToken}
-          className="px-4 py-2 bg-[#4A154B] text-white rounded-md hover:bg-[#611f69]"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-600"
         >
           다시 시도
         </button>
@@ -179,7 +179,7 @@ export default function HuddleRoom(props: HuddleRoomProps) {
   return (
     <div className="flex flex-col h-full">
       {!pip && (
-        <div className="px-4 py-2 bg-[#4A154B] text-white flex items-center justify-between shrink-0">
+        <div className="px-4 py-2 bg-primary text-primary-foreground flex items-center justify-between shrink-0">
           <span className="font-semibold">허들: {roomLabel}</span>
           {!canUseMedia && (
             <span className="text-xs text-amber-200">
@@ -188,7 +188,7 @@ export default function HuddleRoom(props: HuddleRoomProps) {
           )}
         </div>
       )}
-      <div className="flex-1 min-h-0 bg-gray-900 [&_.lk-video-conference]:h-full">
+      <div className="flex-1 min-h-0 bg-default-900 [&_.lk-video-conference]:h-full">
         <LiveKitRoom
           token={token}
           serverUrl={url}

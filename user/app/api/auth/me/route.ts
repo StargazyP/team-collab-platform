@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { getDB } from "@/lib/db";
 import { RowDataPacket } from "mysql2";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function GET(request: NextRequest) {
     try {
@@ -13,6 +13,10 @@ export async function GET(request: NextRequest) {
         const token = cookieStore.get("token")?.value;
 
         console.log("🔐 /api/auth/me - Token from cookie:", token ? "exists" : "missing");
+
+        if (!JWT_SECRET) {
+            return NextResponse.json({ error: "Server misconfigured" }, { status: 500 });
+        }
 
         if (!token) {
             return NextResponse.json({ error: "Not authenticated" }, { status: 401 });

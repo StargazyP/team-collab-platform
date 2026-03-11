@@ -17,6 +17,8 @@ const PUBLIC_API_PATHS = [
   "/api/auth/me",
   "/api/auth/logout",
   "/api/auth/ws-token",
+  "/api/auth/forgot-password",
+  "/api/auth/reset-password",
 ];
 
 /**
