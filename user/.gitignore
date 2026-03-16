@@ -79,3 +79,20 @@ Thumbs.db
 *.tsbuildinfo
 .env.backup
 .env.*.backup
+
+# ===============================
+# Server-side / internal source (GitHub 비공개용)
+# ===============================
+src/
+app/
+database/
+certbot/
+nginx-livekit.conf
+Dockerfile
+docker-compose*.yml
+ecosystem.config.js
+livekit.yaml
+proxy.ts
+schema.sql
+scripts/
+ws-dev.sh
