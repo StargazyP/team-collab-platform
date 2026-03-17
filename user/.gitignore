@@ -81,7 +81,7 @@ Thumbs.db
 .env.*.backup
 
 # ===============================
-# Server-side / internal source (GitHub 비공개용)
+# Server-side / internal source (GitHub 비공개용 - 실행화면·개요만 공개)
 # ===============================
 src/
 app/
@@ -96,3 +96,17 @@ proxy.ts
 schema.sql
 scripts/
 ws-dev.sh
+.dockerignore
+.github/
+PROJECT.md
+deploy-prod.sh
+docs/
+eslint.config.mjs
+next-env.d.ts
+next.config.js
+package-lock.json
+package.json
+postcss.config.mjs
+public/
+tsconfig.json
+vitest.config.ts
