@@ -3,8 +3,8 @@
 Demo of a real-time collaboration and community platform (Next.js).
 
 ## DEMO
-https://jangdonggun.duckdns.org/nextjs/login/
-- **Live URL**: (Add your demo URL here after deployment)
+
+- **Live URL**: ([Demo Link](https://jangdonggun.duckdns.org/nextjs/login/))
 - Try workspaces, channels, DMs, real-time chat, voice/video huddles, and TODO board
 
 ## Features
